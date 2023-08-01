@@ -56,6 +56,26 @@ public:
             }
         }
     }
+    /*
+        Returns the residual graph obtained from the original graph
+        where the for each edge (u, v, w) in the original graph 
+        edges (u, v, w) and (v, u, 0) are in the residual graph
+    */
+    DirWeightedGraph get_residual_graph(){
+        DirWeightedGraph residual {size_};
+        for (Index src = 0; src < size_; src++) {
+            for (auto& edge : graph_.at(src)) {
+                Index dest = edge.first;
+                WeightType weight = edge.second;
+
+                // Add original edge
+                residual.add_edge(src, dest, weight);
+                // Add backwards edge
+                residual.add_edge(dest, src, 0);
+            }
+        }
+        return residual;
+    }
 
     /*
         input: output_stream - stream to write in to
