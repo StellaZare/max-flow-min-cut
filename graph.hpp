@@ -20,7 +20,7 @@ public:
 
         Precondition: size is strictly greater than 0
     */
-    DirWeightedGraph(Index size) : graph{size} {}
+    DirWeightedGraph(Index size) : size_{size}, graph_{size} {}
 
     // Move and Copy constructors
     DirWeightedGraph(const DirWeightedGraph&) = default;
@@ -36,7 +36,7 @@ public:
         Precondition: weights are strictly greater than 0
     */
     void add_edge(Index src, Index dest, WeightType weight) {
-        graph.at(src).push_back({ dest, weight });
+        graph_.at(src).push_back({ dest, weight });
     }
 
     /*
@@ -46,9 +46,8 @@ public:
         Precondition: weights are strictly greater than 0
     */
     void read_adjacency_matrix(std::istream& input_stream){
-        Index size = graph.size();
-        for (Index src = 0; src < size; src++) {
-            for (Index dest = 0; dest < size; dest++) {
+        for (Index src = 0; src < size_; src++) {
+            for (Index dest = 0; dest < size_; dest++) {
                 WeightType weight; 
                 input_stream >> weight;
                 if (weight != 0) {
@@ -63,16 +62,24 @@ public:
         Outputs a human readable representation of the graph to the specified stream 
     */
     void print_graph(std::ostream& output_stream) {
-        for (Index i = 0; i < graph.size(); i++) {
+        for (Index i = 0; i < size_; i++) {
             output_stream << "Vertex " << i << ":" << std::endl;
-            for (const auto& edge : graph.at(i)) {
+            for (const auto& edge : graph_.at(i)) {
                 output_stream << "    Vertex " << edge.first << " with weight " << edge.second << std::endl;
             }
         }
     }
 
+    /*
+        Returns the number of vertices in the graph
+    */
+    Index size(){
+        return size_;
+    }
+
 private:
-    std::vector<std::vector<std::pair<Index, WeightType>>> graph;
+    std::vector<std::vector<std::pair<Index, WeightType>>> graph_;
+    Index size_;
 };
 
 
