@@ -10,6 +10,7 @@ class DirWeightedGraph {
 public:
     using WeightType = T;
     using Index = std::size_t;
+    using EdgeList = std::vector<std::pair<Index, WeightType>>;
 
     // This object is not default constructable 
     DirWeightedGraph() = delete;
@@ -37,6 +38,26 @@ public:
     */
     void add_edge(Index src, Index dest, WeightType weight) {
         graph_.at(src).push_back({ dest, weight });
+    }
+
+    /*
+        input: n - index of the vertex
+        Returns the edge list corresponding to the vertex
+    */
+    EdgeList get_edge_list(Index n){
+        return graph_.at(n);
+    }
+
+    /*
+        input: src - index of source vertex
+               dest - index of destination vertex
+               new_weight - modified weight for edge from src to dest
+    */
+    void modify_edge_weight(Index src, Index dest, WeightType new_weight){
+        for(auto& edge : graph_.at(src)){
+            if(edge.first == dest)
+                edge.second = new_weight;
+        }
     }
 
     /*
@@ -77,6 +98,8 @@ public:
         return residual;
     }
 
+    
+
     /*
         input: output_stream - stream to write in to
         Outputs a human readable representation of the graph to the specified stream 
@@ -98,7 +121,7 @@ public:
     }
 
 private:
-    std::vector<std::vector<std::pair<Index, WeightType>>> graph_;
+    std::vector<EdgeList> graph_;
     Index size_;
 };
 
