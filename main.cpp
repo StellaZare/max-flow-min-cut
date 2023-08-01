@@ -1,6 +1,7 @@
 #include <string>
 #include <cstdint>
 #include "graph.hpp"
+#include "maxflowmincut.hpp"
 
 enum WeightType {
     integer = 0,
@@ -9,6 +10,7 @@ enum WeightType {
 
 int main(int argc, char* argv[]){
 
+    // Parse command line arguments
     if(argc != 2){
         std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
         return -1;
@@ -21,15 +23,18 @@ int main(int argc, char* argv[]){
     }
     const WeightType weight_type = (input_type == "-f") ? WeightType::real : WeightType::integer;
 
+    // Read first line of input
     std::size_t num_vertices {};
     std::cin >> num_vertices;
 
     if(weight_type == WeightType::integer){
-        Graph<uint32_t> graph {num_vertices};
-        graph.print_graph();
+        DirWeightedGraph<uint32_t> graph {num_vertices};
+        graph.read_adjacency_matrix(std::cin);
+        graph.print_graph(std::cout);
     }else{
-        Graph<double> graph {num_vertices};
-        graph.print_graph();
+        DirWeightedGraph<double> graph {num_vertices};
+        graph.read_adjacency_matrix(std::cin);
+        graph.print_graph(std::cout);
     }
 
 }
