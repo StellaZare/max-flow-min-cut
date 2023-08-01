@@ -22,10 +22,10 @@ public:
     */
     DirWeightedGraph(Index size) : graph{size} {}
 
-    // This object is not copyable or movable
-    DirWeightedGraph(const DirWeightedGraph&) = delete;
-    DirWeightedGraph(DirWeightedGraph&&) = delete;
-    DirWeightedGraph& operator=(const DirWeightedGraph&) = delete;
+    // Move and Copy constructors
+    DirWeightedGraph(const DirWeightedGraph&) = default;
+    DirWeightedGraph(DirWeightedGraph&&) = default;
+    DirWeightedGraph& operator=(const DirWeightedGraph&) = default;
 
     /*
         input: src - index of source vertex
