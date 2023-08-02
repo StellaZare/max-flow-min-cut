@@ -30,12 +30,13 @@ int main(int argc, char* argv[]){
     if(weight_type == WeightType::integer){
         DirWeightedGraph<uint32_t> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        maxmin::max_flow_min_cut(0, num_vertices-1, graph);
-        // graph.print_graph(std::cout);
+        uint32_t max_flow = maxmin::max_flow_min_cut(0, num_vertices-1, graph);
+        std::cout << "interger maxium flow: " << max_flow << std::endl;
     }else{
         DirWeightedGraph<double> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        // graph.print_graph(std::cout);
+        double max_flow = maxmin::max_flow_min_cut(0, num_vertices-1, graph);
+        std::cout << "double maxium flow: " << max_flow << std::endl;
     }
 
 }
