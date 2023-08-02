@@ -51,6 +51,13 @@ namespace maxmin {
         return visited.at(sink);
     }
 
+    /*
+        input: src - index of the starting vertex
+               sink - index of the ending vertex
+               graph - the original graph 
+        Creates the residual graph then calculates the max_flow_min_cut 
+
+    */
     template <class GraphType>
     typename GraphType::WeightType max_flow_min_cut(typename GraphType::Index src, typename GraphType::Index sink, GraphType graph){
         GraphType residual_graph = graph.get_residual_graph();
@@ -61,6 +68,7 @@ namespace maxmin {
         while(get_augmenting_path(src, sink, residual_graph, parent_path)){
             typename GraphType::WeightType current_flow = residual_graph.get_edge_weight(parent_path.at(sink), sink);
 
+            // Find the minimum capacity along the path
             for(typename GraphType::Index vertex = parent_path.at(sink); vertex != src; vertex = parent_path.at(vertex)){
                 typename GraphType::Index parent = parent_path.at(vertex);
                 current_flow = std::min(current_flow, residual_graph.get_edge_weight(parent, vertex));
@@ -79,9 +87,6 @@ namespace maxmin {
                 residual_graph.modify_edge_weight(vertex, parent, prev_weight+current_flow);
             }
         }
-
-        // std::cout << "residual" <<std::endl;
-        // residual_graph.print_graph(std::cout);
 
         return max_flow;
     }
