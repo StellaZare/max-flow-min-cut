@@ -53,3 +53,21 @@ TEMPLATE_TEST_CASE("modify edge weight", "[interval]", float, double, long doubl
     CHECK(graph.get_edge_weight(0, 4) == 3);
     CHECK(graph.get_edge_weight(3, 5) == 3);
 }
+
+TEMPLATE_TEST_CASE("modify edge weight edge does not exist", "[interval]", float, double, long double){
+    DirWeightedGraph<TestType> graph {6};
+
+    std::istringstream input {
+        "0 7 0 0 4 0 0 0 5 3 0 0 0 0 0 0 0 8 0 0 3 0 0 5 0 3 0 2 0 0 0 0 0 0 0 0"
+    };
+
+    graph.read_adjacency_matrix(input);
+    
+    CHECK(graph.get_edge_weight(1, 4) == -1);
+    CHECK(graph.get_edge_weight(0, 3) == -1);
+    CHECK(graph.get_edge_weight(5, 2) == -1);
+
+    CHECK_THROWS_AS(graph.modify_edge_weight(1, 4, 2), std::runtime_error);
+    CHECK_THROWS_AS(graph.modify_edge_weight(0, 3, 2), std::runtime_error);
+    CHECK_THROWS_AS(graph.modify_edge_weight(5, 2, 2), std::runtime_error);
+}
