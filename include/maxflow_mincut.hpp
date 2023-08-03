@@ -6,7 +6,6 @@
 #include "graph.hpp"
 
 namespace maxmin {
-
     /*
         input: src - the starting vertex
                sink - the vertex we are trying to reach
@@ -87,7 +86,6 @@ namespace maxmin {
                 residual_graph.modify_edge_weight(vertex, parent, prev_weight+current_flow);
             }
         }
-
         return max_flow;
     }
 
