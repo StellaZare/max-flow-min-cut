@@ -19,15 +19,15 @@ int main(int argc, char* argv[]){
         
         if(strcmp(argv[idx], "-i") == 0){
             integer = true;
-        }else if(strcmp(argv[idx], "-f") == 0){
+        }else if(strcmp(argv[idx], "-r") == 0){
             real_value = true;
         }else if(strcmp(argv[idx], "-print_partitions") == 0){
             print_partitions = true;
         }else if (idx != 0){
             std::cout << idx << ": " << argv[idx] << std::endl;
-            std::cout << "Usage: " << argv[0] << " <-i/-f/-print_partitions>" << std::endl;
+            std::cout << "Usage: " << argv[0] << " <-i/-r/-print_partitions>" << std::endl;
             std::cout << "-i    for integer edge weights" << std::endl;
-            std::cout << "-f    for real valued edge weights" << std::endl;
+            std::cout << "-r    for real valued edge weights" << std::endl;
             std::cout << "-print_partitions    to print the two partitions of the st-cut" << std::endl;
             return -1; 
         }
