@@ -10,16 +10,20 @@ enum WeightType {
 
 int main(int argc, char* argv[]){
 
+    std::string input_type {};
+    
     // Parse command line arguments
-    if(argc != 2){
+    if(argc == 1){
+        input_type = "-f";
+    }else if(argc == 2){
+        input_type = argv[1];
+        if(input_type != "-i" && input_type != "-f"){
+            std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
+            return -1;
+        }
+    }else{
         std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
-        return -1;
-    }
-
-    std::string input_type {argv[1]};
-    if(input_type != "-i" && input_type != "-f"){
-        std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
-        return -1;
+        return -1; 
     }
     const WeightType weight_type = (input_type == "-f") ? WeightType::real : WeightType::integer;
 
@@ -34,17 +38,20 @@ int main(int argc, char* argv[]){
     std::cin >> sink_vertex;
     sink_vertex = (sink_vertex == 0) ? num_vertices-1 : sink_vertex;
 
+    // Max flow can always be exactly represented using a double
+    double max_flow {};
+
     if(weight_type == WeightType::integer){
         DirWeightedGraph<uint32_t> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        uint32_t max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
-        std::cout << "interger maxium flow: " << max_flow << std::endl;
+        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
     }else{
         DirWeightedGraph<double> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        double max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
-        std::cout << "double maxium flow: " << max_flow << std::endl;
+        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
     }
+
+    std::cout << "Maximum flow is " << max_flow << std::endl;
 
     return 0;
 }
