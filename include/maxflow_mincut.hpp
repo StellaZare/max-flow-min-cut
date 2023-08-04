@@ -14,6 +14,8 @@ namespace maxmin {
         Finds the shortest path from src to sink in the graph using BFS
         Modifes the path vector to store the order of vertices in the path
         Returns true if a valid path exists and false otherwise
+
+        Pre condition: src and sink are valid vetrices in the graph (ie. 0 <= src, sink < n where n is the number of vertices in the graph)
     */
     template <class GraphType>
     bool get_augmenting_path(typename GraphType::Index src, typename GraphType::Index sink, GraphType residual_graph, std::vector<int>& path){
@@ -50,14 +52,23 @@ namespace maxmin {
         return visited.at(sink);
     }
 
+    /*
+        input: src - index of the starting vertex
+               graph - the graph to traverse as a DirWeightedGraph object
+               reachable - tracks if the vertex had been reached before 
+        Recursively traverses the graph to find all vertices reachable from the src vertex
+
+        Pre condition: the reachable vector has been resized to hold n elements where n is the number of vertices in the graph
+        Pre condition: src is a valid vertex in the graph (ie. 0<= src < n where n is the number of vertices in the graph)
+    */
     template <class GraphType>
-    void rec_dfs(typename GraphType::Index src, const GraphType& residual_graph, std::vector<bool>& reachable){
+    void rec_dfs(typename GraphType::Index src, const GraphType& graph, std::vector<bool>& reachable){
         reachable.at(src) = true;
-        typename GraphType::EdgeList edge_list = residual_graph.get_edge_list(src);
+        typename GraphType::EdgeList edge_list = graph.get_edge_list(src);
         for(auto& edge : edge_list){
             if(!reachable.at(edge.first) && edge.second > 0){
                 reachable.at(edge.first) = true;
-                rec_dfs(edge.first, residual_graph, reachable);
+                rec_dfs(edge.first, graph, reachable);
             }
         }
     }
@@ -65,9 +76,10 @@ namespace maxmin {
     /*
         input: src - index of the starting vertex
                sink - index of the ending vertex
-               graph - the original graph 
+               graph - the original graph as a DirWeightedGraph object
         Creates the residual graph then calculates the max_flow_min_cut 
 
+        Pre condition: src and sink are valid vetrices in the graph (ie. 0 <= src, sink < n where n is the number of vertices in the graph)
     */
     template <class GraphType>
     typename GraphType::WeightType max_flow_min_cut(typename GraphType::Index src, typename GraphType::Index sink, GraphType& residual_graph){
