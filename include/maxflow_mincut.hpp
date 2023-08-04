@@ -50,6 +50,18 @@ namespace maxmin {
         return visited.at(sink);
     }
 
+    template <class GraphType>
+    void rec_dfs(typename GraphType::Index src, const GraphType& residual_graph, std::vector<bool>& reachable){
+        reachable.at(src) = true;
+        typename GraphType::EdgeList edge_list = residual_graph.get_edge_list(src);
+        for(auto& edge : edge_list){
+            if(!reachable.at(edge.first) && edge.second > 0){
+                reachable.at(edge.first) = true;
+                rec_dfs(edge.first, residual_graph, reachable);
+            }
+        }
+    }
+
     /*
         input: src - index of the starting vertex
                sink - index of the ending vertex
@@ -58,11 +70,9 @@ namespace maxmin {
 
     */
     template <class GraphType>
-    typename GraphType::WeightType max_flow_min_cut(typename GraphType::Index src, typename GraphType::Index sink, GraphType graph){
-        GraphType residual_graph = graph.get_residual_graph();
+    typename GraphType::WeightType max_flow_min_cut(typename GraphType::Index src, typename GraphType::Index sink, GraphType& residual_graph){
         std::vector <int> parent_path;
-        
-        typename GraphType::WeightType max_flow = 0;
+        typename GraphType::WeightType max_flow {};
 
         while(get_augmenting_path(src, sink, residual_graph, parent_path)){
             typename GraphType::WeightType current_flow = residual_graph.get_edge_weight(parent_path.at(sink), sink);
@@ -86,6 +96,7 @@ namespace maxmin {
                 residual_graph.modify_edge_weight(vertex, parent, prev_weight+current_flow);
             }
         }
+        
         return max_flow;
     }
 
