@@ -1,4 +1,5 @@
 #include <string>
+#include <cstring>
 #include <cstdint>
 #include "graph.hpp"
 #include "maxflow_mincut.hpp"
@@ -9,23 +10,31 @@ enum WeightType {
 };
 
 int main(int argc, char* argv[]){
-
-    std::string input_type {};
     
     // Parse command line arguments
-    if(argc == 1){
-        input_type = "-f";
-    }else if(argc == 2){
-        input_type = argv[1];
-        if(input_type != "-i" && input_type != "-f"){
-            std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
-            return -1;
+    bool integer {};
+    bool real_value {};
+    bool print_partitions {};
+    for(std::size_t idx = 0; idx < argc; idx++){
+        
+        if(strcmp(argv[idx], "-i") == 0){
+            integer = true;
+        }else if(strcmp(argv[idx], "-f") == 0){
+            real_value = true;
+        }else if(strcmp(argv[idx], "-print_partitions") == 0){
+            print_partitions = true;
+        }else if (idx != 0){
+            std::cout << idx << ": " << argv[idx] << std::endl;
+            std::cout << "Usage: " << argv[0] << " <-i/-f/-print_partitions>" << std::endl;
+            std::cout << "-i    for integer edge weights" << std::endl;
+            std::cout << "-f    for real valued edge weights" << std::endl;
+            std::cout << "-print_partitions    to print the two partitions of the st-cut" << std::endl;
+            return -1; 
         }
-    }else{
-        std::cout << "Usage: " << argv[0] << " <-i/-f>" << std::endl;
-        return -1; 
     }
-    const WeightType weight_type = (input_type == "-f") ? WeightType::real : WeightType::integer;
+    
+    // if both -f and -i were entered real value takes precedence 
+    const WeightType weight_type = (real_value) ? WeightType::real : WeightType::integer;
 
     // Specify the number of vertices in the graph n
     std::size_t num_vertices {};
@@ -41,16 +50,50 @@ int main(int argc, char* argv[]){
     // Max flow can always be exactly represented using a double
     double max_flow {};
 
+    std::vector<bool> reachable {};
+    reachable.resize(num_vertices);
+
     if(weight_type == WeightType::integer){
+        // Initialize graph and read from input stream
         DirWeightedGraph<uint32_t> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
+
+        // Initialize residual graph
+        DirWeightedGraph<uint32_t> residual_graph {graph.get_residual_graph()};
+
+        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, residual_graph);
+        maxmin::rec_dfs(src_vertex, residual_graph, reachable);
     }else{
+        // Initialize graph and read from input stream
         DirWeightedGraph<double> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
-        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, graph);
+
+        // Initialize residual graph
+        DirWeightedGraph<double> residual_graph {graph.get_residual_graph()};
+
+        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, residual_graph);
+        maxmin::rec_dfs(src_vertex, residual_graph, reachable);
     }
 
+    if(print_partitions){
+        std::vector<std::size_t> partition_s {};
+        std::vector<std::size_t> partition_t {};
+        for(std::size_t v = 0; v < num_vertices; v++){
+            if(reachable.at(v))
+                partition_s.push_back(v);
+            else
+                partition_t.push_back(v);
+        }
+
+        std::cout << "Partition 1:" << std::endl;
+        for(auto& v : partition_s){
+            std::cout << "\tVertex " << v << std::endl;
+        }
+        std::cout << "Partition 2:" << std::endl;
+        for(auto& v : partition_t){
+            std::cout << "\tVertex " << v << std::endl;
+        }
+    }
     std::cout << "Maximum flow is " << max_flow << std::endl;
 
     return 0;
