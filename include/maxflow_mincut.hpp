@@ -94,9 +94,11 @@ namespace maxmin {
                 typename GraphType::Index parent = parent_path.at(vertex);
                 current_flow = std::min(current_flow, residual_graph.get_edge_weight(parent, vertex));
             }
-
+            
+            // Increment the flow of the graph
             max_flow += current_flow;
 
+            // Augment the edges along the path
             for(typename GraphType::Index vertex = sink; vertex != src; vertex = parent_path.at(vertex)){
                 typename GraphType::Index parent = parent_path.at(vertex);
                 
