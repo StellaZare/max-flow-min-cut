@@ -77,12 +77,12 @@ namespace maxmin {
         input: src - index of the starting vertex
                sink - index of the ending vertex
                graph - the original graph as a DirWeightedGraph object
-        Creates the residual graph then calculates the max_flow_min_cut 
+        Creates the residual graph then calculates the maxflow_mincut 
 
         Pre condition: src and sink are valid vetrices in the graph (ie. 0 <= src, sink < n where n is the number of vertices in the graph)
     */
     template <class GraphType>
-    typename GraphType::WeightType max_flow_min_cut(typename GraphType::Index src, typename GraphType::Index sink, GraphType& residual_graph){
+    typename GraphType::WeightType maxflow_mincut(typename GraphType::Index src, typename GraphType::Index sink, GraphType& residual_graph){
         std::vector <int> parent_path;
         typename GraphType::WeightType max_flow {};
 
@@ -94,7 +94,7 @@ namespace maxmin {
                 typename GraphType::Index parent = parent_path.at(vertex);
                 current_flow = std::min(current_flow, residual_graph.get_edge_weight(parent, vertex));
             }
-            
+
             // Increment the flow of the graph
             max_flow += current_flow;
 

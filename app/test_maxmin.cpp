@@ -59,7 +59,7 @@ TEMPLATE_TEST_CASE("inputs/graph_1 test case", "[interval]", int, double){
     
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(0, graph_size-1, graph);
+    TestType result = maxmin::maxflow_mincut(0, graph_size-1, graph);
 
     CHECK(result == expected); 
 }
@@ -78,7 +78,7 @@ TEMPLATE_TEST_CASE("inputs/graph_2 test case", "[interval]", int, double){
 
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(0, graph_size-1, graph);
+    TestType result = maxmin::maxflow_mincut(0, graph_size-1, graph);
 
     CHECK(result == expected); 
 }
@@ -97,7 +97,7 @@ TEMPLATE_TEST_CASE("inputs/graph_3 test case", "[interval]", int, double){
     
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(0, graph_size-1, graph);
+    TestType result = maxmin::maxflow_mincut(0, graph_size-1, graph);
 
     CHECK(result == expected); 
 }
@@ -116,7 +116,7 @@ TEMPLATE_TEST_CASE("inputs/graph_4 test case", "[interval]", int, double){
     
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(0, graph_size-1, graph);
+    TestType result = maxmin::maxflow_mincut(0, graph_size-1, graph);
 
     CHECK(result == expected); 
 }
@@ -135,7 +135,7 @@ TEMPLATE_TEST_CASE("inputs/graph_1 test case src=1 sink=5", "[interval]", int, d
     
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(1, graph_size-1, graph);
+    TestType result = maxmin::maxflow_mincut(1, graph_size-1, graph);
 
     CHECK(result == expected); 
 }
@@ -154,7 +154,7 @@ TEMPLATE_TEST_CASE("inputs/graph_1 test case src=0 sink=2", "[interval]", int, d
     
     std::vector<int> path;
     path.resize(graph_size);
-    TestType result = maxmin::max_flow_min_cut(0, 2, graph);
+    TestType result = maxmin::maxflow_mincut(0, 2, graph);
 
     CHECK(result == expected); 
 }

@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
         // Initialize residual graph
         DirWeightedGraph<uint32_t> residual_graph {graph.get_residual_graph()};
 
-        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, residual_graph);
+        max_flow = maxmin::maxflow_mincut(src_vertex, sink_vertex, residual_graph);
         maxmin::rec_dfs(src_vertex, residual_graph, reachable);
     }else{
         // Initialize graph and read from input stream
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
         // Initialize residual graph
         DirWeightedGraph<double> residual_graph {graph.get_residual_graph()};
 
-        max_flow = maxmin::max_flow_min_cut(src_vertex, sink_vertex, residual_graph);
+        max_flow = maxmin::maxflow_mincut(src_vertex, sink_vertex, residual_graph);
         maxmin::rec_dfs(src_vertex, residual_graph, reachable);
     }
 
