@@ -72,7 +72,7 @@ public:
                dest - index of destination vertex
                new_weight - modified weight for edge from src to dest
         Changes the weight of the edge from src to dest to the new weight
-        has no effect if the edge does not exist
+        Throws an exception if the edge does not exist
     */
     void modify_edge_weight(Index src, Index dest, WeightType new_weight){
         if (get_edge_weight(src, dest) == -1)
