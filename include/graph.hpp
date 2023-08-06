@@ -121,8 +121,6 @@ public:
         return residual;
     }
 
-    
-
     /*
         input: output_stream - stream to write in to
         Outputs a human readable representation of the graph to the specified stream 
