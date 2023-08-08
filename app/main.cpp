@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
             std::cout << "-i    for integer edge weights" << std::endl;
             std::cout << "-r    for real valued edge weights (default)" << std::endl;
             std::cout << "-print_partitions    to print the two partitions of the st-cut" << std::endl;
-            return -1; 
+            return 0; 
         }
     }
     
