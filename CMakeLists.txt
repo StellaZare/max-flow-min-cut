@@ -16,3 +16,10 @@ find_package(Catch2 REQUIRED)
 add_executable(main ${CMAKE_CURRENT_SOURCE_DIR}/app/main.cpp)
 add_executable(test_graph ${CMAKE_CURRENT_SOURCE_DIR}/app/test_graph.cpp)
 add_executable(test_maxmin ${CMAKE_CURRENT_SOURCE_DIR}/app/test_maxmin.cpp)
+
+# Install main program
+install(TARGETS main DESTINATION bin)
+
+# Install demo script
+install(PROGRAMS demo DESTINATION bin)
+
