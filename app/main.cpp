@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
     }
     
     // if both -f and -i were entered real value takes precedence 
-    const WeightType weight_type = (real_value) ? WeightType::real : WeightType::integer;
+    const WeightType weight_type = ((!real_value && !integer) || real_value) ? WeightType::real : WeightType::integer;
 
     // Specify the number of vertices in the graph n
     std::size_t num_vertices {};
@@ -54,6 +54,7 @@ int main(int argc, char* argv[]){
     reachable.resize(num_vertices);
 
     if(weight_type == WeightType::integer){
+        std::cout << "Integer edge weights used" << std::endl;
         // Initialize graph and read from input stream
         DirWeightedGraph<uint32_t> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
@@ -64,6 +65,7 @@ int main(int argc, char* argv[]){
         max_flow = maxmin::maxflow_mincut(src_vertex, sink_vertex, residual_graph);
         maxmin::rec_dfs(src_vertex, residual_graph, reachable);
     }else{
+        std::cout << "Real value edge weights used" << std::endl;
         // Initialize graph and read from input stream
         DirWeightedGraph<double> graph {num_vertices};
         graph.read_adjacency_matrix(std::cin);
