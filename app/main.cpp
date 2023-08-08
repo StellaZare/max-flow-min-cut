@@ -23,11 +23,10 @@ int main(int argc, char* argv[]){
             real_value = true;
         }else if(strcmp(argv[idx], "-print_partitions") == 0){
             print_partitions = true;
-        }else if (idx != 0){
-            std::cout << idx << ": " << argv[idx] << std::endl;
+        }else if (idx != 0|| strcmp(argv[idx], "-h") == 0){
             std::cout << "Usage: " << argv[0] << " <-i/-r/-print_partitions>" << std::endl;
             std::cout << "-i    for integer edge weights" << std::endl;
-            std::cout << "-r    for real valued edge weights" << std::endl;
+            std::cout << "-r    for real valued edge weights (default)" << std::endl;
             std::cout << "-print_partitions    to print the two partitions of the st-cut" << std::endl;
             return -1; 
         }
