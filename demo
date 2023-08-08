@@ -1,0 +1,28 @@
+#! /usr/bin/env bash
+
+# Print an error message and exit.
+panic()
+{
+	echo "ERROR: $@"
+	exit 1
+}
+
+# Get the directory in which the currently running script is located.
+cmd_dir=$(dirname "$0") || panic "cannot determine command directory"
+
+main_program="$cmd_dir/main"
+
+echo "Running main program with -h option"
+$main_program -h || panic "main program -h failed"
+
+echo "Running main program with graph_1.txt input"
+$main_program < inputs/graph_1.txt || panic "main program graph_1.txt failed"
+
+echo "Running main program with -i -print_partitions options and graph_1.txt input"
+$main_program -i -print_partitions < inputs/graph_1.txt || panic "main program -i -print_partitions graph_1.txt failed"
+
+echo "Running main program with graph_doubles.txt input"
+$main_program < inputs/graph_doubles.txt || panic "main program graph_doubles.txt failed"
+
+echo "Running main program with -print_partitions option and graph_doubles.txt input"
+$main_program -print_partitions < inputs/graph_doubles.txt || panic "main program -print_partitions graph_doubles.txt failed"

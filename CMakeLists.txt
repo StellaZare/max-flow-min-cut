@@ -20,6 +20,13 @@ add_executable(test_maxmin ${CMAKE_CURRENT_SOURCE_DIR}/app/test_maxmin.cpp)
 # Install main program
 install(TARGETS main DESTINATION bin)
 
+# Install piped-in files using the install(FILES ...) command.
+install(FILES
+    inputs/graph_1.txt
+    inputs/graph_doubles.txt
+    DESTINATION bin
+)
+
 # Install demo script
 install(PROGRAMS demo DESTINATION bin)
 
